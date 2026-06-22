@@ -17,7 +17,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="font-mono text-sm text-[var(--color-accent)] transition-colors hover:text-[var(--color-text)]"
           >
-            LinkedIn
+            LinkedIn · Me
           </Link>
           <h1 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-[var(--color-text)] sm:text-5xl">
             Making invisible systems feel intuitive
