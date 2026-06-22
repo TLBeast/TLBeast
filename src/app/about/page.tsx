@@ -29,12 +29,14 @@ export default function AboutPage() {
           about them.
         </p>
         <p>
-          This site lives at{" "}
+          Connect on{" "}
           <Link
-            href={`https://${siteConfig.domain}`}
+            href={siteConfig.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-mono text-[var(--color-accent)] underline underline-offset-2"
           >
-            {siteConfig.domain}
+            LinkedIn
           </Link>
           . It&apos;s a work in progress, built in public, one concept at a
           time.

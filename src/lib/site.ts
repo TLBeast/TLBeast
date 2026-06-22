@@ -7,6 +7,7 @@ export const siteConfig = {
   tagline: "See what happens inside the machine.",
   author: "TLBeast",
   contactEmail: "surya.anand2023@gmail.com",
+  linkedIn: "https://www.linkedin.com/in/surya-anand-430a0523a/",
 };
 
 export const navItems = [

@@ -11,9 +11,14 @@ export default function HomePage() {
       <section className="grid-bg relative overflow-hidden border-b border-[var(--color-border-subtle)]">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[var(--color-accent-glow)] to-transparent" />
         <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32">
-          <p className="font-mono text-sm text-[var(--color-accent)]">
-            {siteConfig.domain}
-          </p>
+          <Link
+            href={siteConfig.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-sm text-[var(--color-accent)] transition-colors hover:text-[var(--color-text)]"
+          >
+            LinkedIn
+          </Link>
           <h1 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-[var(--color-text)] sm:text-5xl">
             Making invisible systems feel intuitive
           </h1>

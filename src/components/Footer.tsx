@@ -15,10 +15,12 @@ export function Footer() {
         </div>
         <p className="font-mono text-xs text-[var(--color-text-subtle)]">
           <Link
-            href={`https://${siteConfig.domain}`}
+            href={siteConfig.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
             className="transition-colors hover:text-[var(--color-accent)]"
           >
-            {siteConfig.domain}
+            LinkedIn
           </Link>
         </p>
       </div>
