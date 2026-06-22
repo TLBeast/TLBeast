@@ -11,18 +11,24 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
-        About {siteConfig.name}
+        About Me {siteConfig.name}
       </h1>
 
       <div className="mt-8 space-y-6 text-[var(--color-text-muted)] leading-relaxed">
         <p>
-          Computer systems are everywhere — in every app, every server, every
-          device. But the ideas behind them (processes, memory, threads,
-          scheduling, caches, networking) are often taught in ways that feel
-          abstract and disconnected from what actually happens.
+          My passion is teaching.Teaching is in my blood. 
+          Ironically, I don't really care for the concepts themselves.
+          Rather, I care about just taking something that is relevant but seems
+          1. terrifying
+          2. too abstract
+          3. too dense
+          4. too elitist
+          I just want to turn this meshy confusion into something that evokes simplicity and elegance.
+          To me it's like an art that just flows out of me, something about taking a muddy mess
+          and just turning it into intutive beauty...
         </p>
         <p>
-          <strong className="text-[var(--color-text)]">TLBeast</strong> is my
+          <strong className="text-[var(--color-text)]">TLBeast </strong> is my
           attempt to change that. I&apos;m learning these topics deeply and
           documenting the journey — daily scribbles, visual diagrams, and eventually
           interactive labs that let you see systems work instead of just reading
