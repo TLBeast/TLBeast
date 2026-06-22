@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
-        About Me {siteConfig.name}
+        About Me
       </h1>
 
       <div className="mt-8 space-y-6 text-[var(--color-text-muted)] leading-relaxed">
