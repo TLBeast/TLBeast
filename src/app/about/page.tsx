@@ -29,16 +29,16 @@ export default function AboutPage() {
           about them.
         </p>
         <p>
-          Connect on{" "}
           <Link
             href={siteConfig.linkedIn}
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-[var(--color-accent)] underline underline-offset-2"
           >
-            LinkedIn · Me
+            Me LinkedIn
           </Link>
-          . It&apos;s a work in progress, built in public, one concept at a
+          {" "}
+          — it&apos;s a work in progress, built in public, one concept at a
           time.
         </p>
       </div>

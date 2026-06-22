@@ -20,7 +20,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="transition-colors hover:text-[var(--color-accent)]"
           >
-            LinkedIn · Me
+            Me LinkedIn
           </Link>
         </p>
       </div>
