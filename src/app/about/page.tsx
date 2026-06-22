@@ -41,11 +41,9 @@ export default function AboutPage() {
             rel="noopener noreferrer"
             className="font-mono text-[var(--color-accent)] underline underline-offset-2"
           >
-            Me LinkedIn
+            
           </Link>
-          {" "}
-          — it&apos;s a work in progress, built in public, one concept at a
-          time.
+          {" "}          
         </p>
       </div>
 
