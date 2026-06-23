@@ -17,7 +17,7 @@ export default function AboutPage() {
       <div className="mt-8 space-y-6 text-[var(--color-text-muted)] leading-relaxed">
         <p>
           My passion is teaching. Teaching is in my blood.
-          Ironically, I don't really care for the concepts themselves.
+          Ironically, I don't really care for the concepts themselves. 
           Rather, I care about just taking something that is relevant but seems
           1. terrifying
           2. too abstract
