@@ -26,6 +26,8 @@ type ScribbleFrontmatter = {
   tags?: string[];
   readingTime?: string;
   audio?: string;
+  video?: string;
+  videoEmbed?: string;
   images?: ScribbleMeta["images"];
 };
 
@@ -49,6 +51,8 @@ function parseScribble(
     tags: data.tags ?? [],
     readingTime: data.readingTime,
     audio: data.audio,
+    video: data.video,
+    videoEmbed: data.videoEmbed,
     images: data.images,
     hasText: content.trim().length > 0,
     content,

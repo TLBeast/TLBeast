@@ -34,3 +34,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large local videos — host on Google Drive instead
+public/streams/*.mp4
+public/streams/*.mov

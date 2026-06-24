@@ -12,6 +12,8 @@ export type ScribbleMeta = {
   tags: string[];
   readingTime?: string;
   audio?: string;
+  video?: string;
+  videoEmbed?: string;
   images?: ScribbleImage[];
   hasText?: boolean;
 };
@@ -74,12 +76,13 @@ export function groupScribblesByMonth(
 }
 
 export function getScribbleMediaTypes(
-  scribble: Pick<ScribbleMeta, "hasText" | "audio" | "images">
-): ("text" | "image" | "audio")[] {
-  const types: ("text" | "image" | "audio")[] = [];
+  scribble: Pick<ScribbleMeta, "hasText" | "audio" | "video" | "videoEmbed" | "images">
+): ("text" | "image" | "audio" | "video")[] {
+  const types: ("text" | "image" | "audio" | "video")[] = [];
 
   if (scribble.hasText) types.push("text");
   if (scribble.audio) types.push("audio");
+  if (scribble.video || scribble.videoEmbed) types.push("video");
   if (scribble.images?.length) types.push("image");
 
   return types;

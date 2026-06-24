@@ -5,6 +5,7 @@ const mediaLabels = {
   text: "Text",
   image: "Image",
   audio: "Audio",
+  video: "Video",
 } as const;
 
 export function ScribbleCard({ scribble }: { scribble: ScribbleMeta }) {

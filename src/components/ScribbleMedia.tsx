@@ -1,13 +1,62 @@
 import type { ScribbleImage } from "@/lib/scribble-types";
 
+function toEmbedUrl(url: string): string {
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (driveMatch) {
+    return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+  }
+  return url;
+}
+
+function StreamPlayer({
+  video,
+  videoEmbed,
+}: {
+  video?: string;
+  videoEmbed?: string;
+}) {
+  if (videoEmbed) {
+    return (
+      <iframe
+        src={toEmbedUrl(videoEmbed)}
+        title="Stream"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+        className="aspect-video w-full border-0"
+      />
+    );
+  }
+
+  if (video) {
+    return (
+      <video controls preload="metadata" playsInline className="w-full">
+        <source src={video} />
+        Your browser does not support video playback.
+      </video>
+    );
+  }
+
+  return null;
+}
+
 export function ScribbleMedia({
   audio,
   images,
+  video,
+  videoEmbed,
+  videoAtBottom = false,
 }: {
   audio?: string;
   images?: ScribbleImage[];
+  video?: string;
+  videoEmbed?: string;
+  videoAtBottom?: boolean;
 }) {
-  if (!audio && !images?.length) return null;
+  const hasVideo = Boolean(video || videoEmbed);
+  const showVideo = hasVideo && videoAtBottom;
+  const showTop = audio || images?.length || (hasVideo && !videoAtBottom);
+
+  if (!showTop && !showVideo) return null;
 
   return (
     <div className="space-y-6">
@@ -43,6 +92,24 @@ export function ScribbleMedia({
               )}
             </figure>
           ))}
+        </div>
+      )}
+
+      {hasVideo && !videoAtBottom && (
+        <div className="overflow-hidden rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]">
+          <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
+            Stream
+          </p>
+          <StreamPlayer video={video} videoEmbed={videoEmbed} />
+        </div>
+      )}
+
+      {showVideo && (
+        <div className="overflow-hidden rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]">
+          <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
+            Stream
+          </p>
+          <StreamPlayer video={video} videoEmbed={videoEmbed} />
         </div>
       )}
     </div>

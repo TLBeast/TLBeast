@@ -40,6 +40,11 @@ export function ScribbleContent({ scribble }: { scribble: Scribble }) {
         {scribble.content.trim() && (
           <MarkdownContent content={scribble.content} />
         )}
+        <ScribbleMedia
+          video={scribble.video}
+          videoEmbed={scribble.videoEmbed}
+          videoAtBottom
+        />
       </div>
     </>
   );
