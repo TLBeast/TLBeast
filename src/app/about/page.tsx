@@ -59,6 +59,12 @@ export default function AboutPage() {
             — daily uploads (text, images, or audio)
           </li>
           <li>
+            <Link href="/streams" className="text-[var(--color-accent)] hover:underline">
+              Streams
+            </Link>{" "}
+            — recordings and stream sessions
+          </li>
+          <li>
             <Link href="/diagrams" className="text-[var(--color-accent)] hover:underline">
               Visual Diagrams
             </Link>{" "}

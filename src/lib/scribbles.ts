@@ -110,3 +110,9 @@ export function getScribbleBySlug(slug: string): Scribble | null {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   return parseScribble(slug, fileContents);
 }
+
+export function getStreams(): Scribble[] {
+  return getAllScribblesWithContent().filter(
+    (scribble) => scribble.video || scribble.videoEmbed
+  );
+}
