@@ -16,6 +16,7 @@ export type ScribbleMeta = {
   videoEmbed?: string;
   streamTitle?: string;
   streamNote?: string;
+  showStreamOnScribble?: boolean;
   images?: ScribbleImage[];
   hasText?: boolean;
 };

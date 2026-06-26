@@ -30,6 +30,7 @@ type ScribbleFrontmatter = {
   videoEmbed?: string;
   streamTitle?: string;
   streamNote?: string;
+  showStreamOnScribble?: boolean;
   images?: ScribbleMeta["images"];
 };
 
@@ -57,6 +58,7 @@ function parseScribble(
     videoEmbed: data.videoEmbed,
     streamTitle: data.streamTitle,
     streamNote: data.streamNote,
+    showStreamOnScribble: data.showStreamOnScribble,
     images: data.images,
     hasText: content.trim().length > 0,
     content,
