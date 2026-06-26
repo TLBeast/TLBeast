@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ScribbleMedia } from "@/components/ScribbleMedia";
 
 export const metadata: Metadata = {
   title: "Interactive Labs",
@@ -15,6 +16,10 @@ const labs = [
       "An interactive OS playground — fetch-decode-execute, virtualization, concurrency, persistence, processes, fork/exec, context switches, and the real xv6 source code. Nothing to install. Just poke it.",
     href: "/labs/xv6/",
     status: "live" as const,
+    walkthroughEmbed:
+      "https://drive.google.com/file/d/168_oKd4K1g-7osMmW2D4-NjzNYYLTDpY/view?usp=sharing",
+    walkthroughNote:
+      "Walkthrough of the xv6 interactive playground — watch before or while you poke around.",
   },
 ];
 
@@ -64,6 +69,25 @@ export default function LabsPage() {
             loading="lazy"
           />
         </div>
+
+        {featured.walkthroughEmbed && (
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold tracking-tight text-[var(--color-text)]">
+                Walkthrough
+              </h3>
+              {featured.walkthroughNote && (
+                <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {featured.walkthroughNote}
+                </p>
+              )}
+            </div>
+            <ScribbleMedia
+              videoEmbed={featured.walkthroughEmbed}
+              videoLabel=""
+            />
+          </div>
+        )}
       </div>
     </div>
   );

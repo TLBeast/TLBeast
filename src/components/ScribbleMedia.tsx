@@ -45,12 +45,14 @@ export function ScribbleMedia({
   video,
   videoEmbed,
   videoAtBottom = false,
+  videoLabel = "Stream",
 }: {
   audio?: string;
   images?: ScribbleImage[];
   video?: string;
   videoEmbed?: string;
   videoAtBottom?: boolean;
+  videoLabel?: string;
 }) {
   const hasVideo = Boolean(video || videoEmbed);
   const showVideo = hasVideo && videoAtBottom;
@@ -97,18 +99,22 @@ export function ScribbleMedia({
 
       {hasVideo && !videoAtBottom && (
         <div className="overflow-hidden rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]">
-          <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
-            Stream
-          </p>
+          {videoLabel && (
+            <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
+              {videoLabel}
+            </p>
+          )}
           <StreamPlayer video={video} videoEmbed={videoEmbed} />
         </div>
       )}
 
       {showVideo && (
         <div className="overflow-hidden rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]">
-          <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
-            Stream
-          </p>
+          {videoLabel && (
+            <p className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-text-subtle)]">
+              {videoLabel}
+            </p>
+          )}
           <StreamPlayer video={video} videoEmbed={videoEmbed} />
         </div>
       )}
