@@ -31,6 +31,7 @@ type ScribbleFrontmatter = {
   streamTitle?: string;
   streamNote?: string;
   showStreamOnScribble?: boolean;
+  streamsOnly?: boolean;
   images?: ScribbleMeta["images"];
 };
 
@@ -59,49 +60,49 @@ function parseScribble(
     streamTitle: data.streamTitle,
     streamNote: data.streamNote,
     showStreamOnScribble: data.showStreamOnScribble,
+    streamsOnly: data.streamsOnly,
     images: data.images,
     hasText: content.trim().length > 0,
     content,
   };
 }
 
-export function getAllScribblesWithContent(): Scribble[] {
+function loadAllScribbles(): Scribble[] {
   ensureScribblesDirectory();
 
   const fileNames = fs
     .readdirSync(scribblesDirectory)
     .filter((name) => name.endsWith(".md"));
 
-  const scribbles = fileNames.map((fileName) => {
+  return fileNames.map((fileName) => {
     const slug = fileName.replace(/\.md$/, "");
     const fullPath = path.join(scribblesDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, "utf8");
     return parseScribble(slug, fileContents);
   });
+}
 
-  return scribbles.sort(
-    (a, b) => parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime()
+function sortScribblesNewestFirst(scribbles: Scribble[]): Scribble[] {
+  return scribbles.sort((a, b) => {
+    const dateDiff =
+      parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime();
+    if (dateDiff !== 0) return dateDiff;
+    return b.slug.localeCompare(a.slug);
+  });
+}
+
+export function getAllScribblesWithContent(): Scribble[] {
+  return sortScribblesNewestFirst(loadAllScribbles());
+}
+
+export function getScribblesForTimeline(): Scribble[] {
+  return sortScribblesNewestFirst(
+    loadAllScribbles().filter((scribble) => !scribble.streamsOnly)
   );
 }
 
 export function getAllScribbles(): ScribbleMeta[] {
-  ensureScribblesDirectory();
-
-  const fileNames = fs
-    .readdirSync(scribblesDirectory)
-    .filter((name) => name.endsWith(".md"));
-
-  const scribbles = fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, "");
-    const fullPath = path.join(scribblesDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { content: _, ...meta } = parseScribble(slug, fileContents);
-    return meta;
-  });
-
-  return scribbles.sort(
-    (a, b) => parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime()
-  );
+  return getScribblesForTimeline().map(({ content: _, ...meta }) => meta);
 }
 
 export function getScribbleBySlug(slug: string): Scribble | null {

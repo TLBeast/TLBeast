@@ -17,6 +17,7 @@ export type ScribbleMeta = {
   streamTitle?: string;
   streamNote?: string;
   showStreamOnScribble?: boolean;
+  streamsOnly?: boolean;
   images?: ScribbleImage[];
   hasText?: boolean;
 };

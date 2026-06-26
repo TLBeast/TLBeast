@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ScribblesTimeline } from "@/components/ScribblesTimeline";
-import { getAllScribblesWithContent } from "@/lib/scribbles";
+import { getScribblesForTimeline } from "@/lib/scribbles";
 
 export const metadata: Metadata = {
   title: "Systems Scribbles",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function ScribblesPage() {
-  const scribbles = getAllScribblesWithContent();
+  const scribbles = getScribblesForTimeline();
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">

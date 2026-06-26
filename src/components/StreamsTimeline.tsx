@@ -12,10 +12,12 @@ function getStreamLabel(stream: Scribble): string {
 export function StreamsTimeline({ streams }: { streams: Scribble[] }) {
   const chronological = useMemo(
     () =>
-      [...streams].sort(
-        (a, b) =>
-          parseLocalDate(a.date).getTime() - parseLocalDate(b.date).getTime()
-      ),
+      [...streams].sort((a, b) => {
+        const dateDiff =
+          parseLocalDate(a.date).getTime() - parseLocalDate(b.date).getTime();
+        if (dateDiff !== 0) return dateDiff;
+        return a.slug.localeCompare(b.slug);
+      }),
     [streams]
   );
 
