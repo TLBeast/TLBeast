@@ -74,7 +74,7 @@ export default function AboutPage() {
             <Link href="/labs" className="text-[var(--color-accent)] hover:underline">
               Interactive Labs
             </Link>{" "}
-            — hands-on simulations (coming soon)
+            — hands-on simulations (xv6 playground live)
           </li>
         </ul>
       </div>

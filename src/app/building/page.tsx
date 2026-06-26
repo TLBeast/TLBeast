@@ -17,6 +17,13 @@ const roadmap = [
     status: "active",
   },
   {
+    phase: "Now",
+    title: "Interactive Labs",
+    description:
+      "Hands-on simulations you can tweak and break — starting with xv6, demystified: an interactive walkthrough of OS fundamentals with the real kernel source.",
+    status: "active",
+  },
+  {
     phase: "Next",
     title: "Visual Diagrams",
     description:
@@ -25,9 +32,9 @@ const roadmap = [
   },
   {
     phase: "Later",
-    title: "Interactive Labs",
+    title: "More labs",
     description:
-      "Hands-on simulations where you can tweak parameters and watch the system respond — schedulers you can configure, memory you can allocate, networks you can trace.",
+      "Scheduler playground, virtual memory simulator, cache visualizer, network tracer — built as the scribbles pile up.",
     status: "planned",
   },
 ];

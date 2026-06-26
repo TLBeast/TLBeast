@@ -120,7 +120,7 @@ export default function HomePage() {
             {
               href: "/labs",
               title: "Interactive Labs",
-              desc: "Hands-on simulations to explore concepts yourself. Coming soon.",
+              desc: "Hands-on simulations — start with the xv6 OS playground.",
             },
             {
               href: "/about",

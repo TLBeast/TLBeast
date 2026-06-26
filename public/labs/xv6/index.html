@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>xv6, Demystified — An Interactive OS Playground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Progress bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Side navigation -->
+  <nav id="sidenav" aria-label="Section navigation">
+    <div class="nav-brand">xv6<span>.demystified</span></div>
+    <a href="#hero" class="nav-link active">Start here</a>
+    <a href="#what-is-os" class="nav-link">1 · What is an OS?</a>
+    <a href="#fde" class="nav-link">2 · Fetch · Decode · Execute</a>
+    <a href="#virtualization" class="nav-link">3 · Virtualization</a>
+    <a href="#concurrency" class="nav-link">4 · Concurrency</a>
+    <a href="#persistence" class="nav-link">5 · Persistence</a>
+    <a href="#protection" class="nav-link">6 · User vs Kernel</a>
+    <a href="#process" class="nav-link">7 · What is a Process?</a>
+    <a href="#forkexec" class="nav-link">8 · fork() &amp; exec()</a>
+    <a href="#states" class="nav-link">9 · Process States</a>
+    <a href="#ctxswitch" class="nav-link">10 · Context Switch</a>
+    <a href="#proc-struct" class="nav-link">11 · The xv6 proc struct</a>
+    <a href="#real-deal" class="nav-link">12 · The Real Deal (source)</a>
+  </nav>
+
+  <button id="nav-toggle" aria-label="Toggle navigation">☰</button>
+
+  <main>
+    <!-- ============================ HERO ============================ -->
+    <section id="hero" class="hero">
+      <div class="hero-inner">
+        <div class="badge">an interactive playground</div>
+        <h1>xv6, <span class="grad">demystified</span></h1>
+        <p class="lede">
+          An operating system sounds scary. It is not. By the time you scroll to the bottom,
+          you will <em>see</em> how a CPU runs instructions, how one chip pretends to be many,
+          how programs share, fight, and forget — and exactly what a process is inside the tiny
+          teaching OS called <strong>xv6</strong>.
+        </p>
+        <p class="sub">Nothing to install. Everything below is clickable. Poke it.</p>
+        <a href="#what-is-os" class="cta">Let's go ↓</a>
+      </div>
+      <div class="hero-glow"></div>
+    </section>
+
+    <!-- ====================== 1. WHAT IS AN OS ====================== -->
+    <section id="what-is-os" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 1</span>
+        <h2>What even <em>is</em> an operating system?</h2>
+        <p class="explain">
+          Imagine a giant, busy restaurant kitchen full of expensive equipment: ovens (the CPU),
+          counters (memory), and freezers (the disk). You are a customer. You do <strong>not</strong>
+          walk into the kitchen and cook. You hand your order to a <strong>waiter</strong>, and the
+          waiter deals with all the chaos for you.
+        </p>
+        <p class="explain">
+          <strong>The operating system is that waiter.</strong> It is <em>software, not hardware</em> —
+          a layer that sits between your programs and the physical machine, so no program has to talk
+          directly to the CPU, memory, and disks. You just say "I want to run," and the OS handles the
+          messy details.
+        </p>
+      </div>
+
+      <div class="layer-stack" id="layer-stack">
+        <div class="layer layer-app" data-info="This is you and your programs: a browser, a game, a text editor. They just want to run. They don't know (or care) how the hardware works.">
+          <span class="layer-title">You &amp; Your Programs</span>
+          <span class="layer-sub">browser · game · editor · this webpage</span>
+        </div>
+        <div class="layer-arrow">requests (system calls) ↓ &nbsp;&nbsp; results ↑</div>
+        <div class="layer layer-os" data-info="The Operating System (like xv6). The 'waiter'. It shares the hardware fairly, keeps programs from stepping on each other, and offers a clean menu of services (system calls).">
+          <span class="layer-title">The Operating System &nbsp;<span class="tag">xv6 lives here</span></span>
+          <span class="layer-sub">scheduler · memory manager · file system · drivers</span>
+        </div>
+        <div class="layer-arrow">commands ↓ &nbsp;&nbsp; raw signals ↑</div>
+        <div class="layer layer-hw" data-info="The physical machine. Real silicon. The CPU executes instructions, RAM holds data while powered, the disk remembers things forever.">
+          <span class="layer-title">The Hardware</span>
+          <span class="layer-sub">CPU · memory (RAM) · disk · devices</span>
+        </div>
+      </div>
+      <p class="caption" id="layer-caption">Hover or tap any layer to see what it does.</p>
+
+      <div class="three-pillars">
+        <p class="explain center">Everything an OS does boils down to <strong>three big ideas</strong>. The whole rest of this page is just these three, up close:</p>
+        <div class="pillar-grid">
+          <a href="#virtualization" class="pillar">
+            <div class="pillar-icon">🪄</div>
+            <h3>Virtualization</h3>
+            <p>Make one real thing (a CPU, a stick of RAM) <em>look like many</em>, so every program feels like it owns the whole machine.</p>
+          </a>
+          <a href="#concurrency" class="pillar">
+            <div class="pillar-icon">🤹</div>
+            <h3>Concurrency</h3>
+            <p>Juggle many tasks at once — and survive the chaos when they touch the same data at the same time.</p>
+          </a>
+          <a href="#persistence" class="pillar">
+            <div class="pillar-icon">💾</div>
+            <h3>Persistence</h3>
+            <p>Remember things <em>after</em> the power goes off, by carefully writing to disk through a file system.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 2. FETCH DECODE EXECUTE ====================== -->
+    <section id="fde" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 2</span>
+        <h2>The heartbeat: <em>Fetch → Decode → Execute</em></h2>
+        <p class="explain">
+          Underneath everything, a CPU does one boring thing billions of times a second. It grabs the next
+          instruction, figures out what it means, and does it. Then again. Forever. That loop is the
+          heartbeat of every program you have ever run.
+        </p>
+        <ul class="step-legend">
+          <li><span class="dot fetch"></span><strong>Fetch</strong> — grab the next instruction from memory</li>
+          <li><span class="dot decode"></span><strong>Decode</strong> — figure out what it's asking for</li>
+          <li><span class="dot execute"></span><strong>Execute</strong> — actually do it (add, load, jump…)</li>
+        </ul>
+      </div>
+
+      <div class="cpu-demo">
+        <div class="cpu-memory">
+          <div class="panel-title">Memory (the program)</div>
+          <ol class="instr-list" id="instr-list"></ol>
+        </div>
+
+        <div class="cpu-core">
+          <div class="panel-title">CPU</div>
+          <div class="stage-track">
+            <div class="stage" data-stage="fetch">Fetch</div>
+            <div class="stage" data-stage="decode">Decode</div>
+            <div class="stage" data-stage="execute">Execute</div>
+          </div>
+          <div class="cpu-readout" id="cpu-readout">Press <kbd>Step</kbd> to run one stage at a time, or <kbd>Run</kbd> to watch the heartbeat.</div>
+
+          <div class="registers">
+            <div class="reg"><span class="reg-name">PC</span><span class="reg-val" id="reg-pc">0</span><span class="reg-note">program counter</span></div>
+            <div class="reg"><span class="reg-name">ACC</span><span class="reg-val" id="reg-acc">0</span><span class="reg-note">accumulator</span></div>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="fde-step">Step ▸</button>
+            <button class="btn btn-primary" id="fde-run">Run ▶</button>
+            <button class="btn btn-ghost" id="fde-reset">Reset ⟲</button>
+          </div>
+        </div>
+
+        <div class="cpu-output">
+          <div class="panel-title">Output</div>
+          <div class="screen" id="fde-output"></div>
+        </div>
+      </div>
+      <p class="caption">This tiny CPU understands 4 instructions. Watch <code>PC</code> (which line is next) and <code>ACC</code> (the CPU's scratch value) change with every step.</p>
+    </section>
+
+    <!-- ====================== 3. VIRTUALIZATION ====================== -->
+    <section id="virtualization" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 3 · Big Idea #1</span>
+        <h2>Virtualization: one CPU pretending to be many</h2>
+        <p class="explain">
+          Here's the magic trick. You have, say, <strong>one</strong> CPU. But you run a browser, music,
+          a download, and a game — all "at the same time." How?
+        </p>
+        <p class="explain">
+          The OS switches between programs <em>insanely fast</em> — runs program A for a sliver of time,
+          freezes it, runs B for a sliver, freezes it, runs C… So fast that to you it looks simultaneous.
+          That's the same trick as Netflix splitting one big server so a thousand people each feel like they
+          have their own. The illusion of "many" from "one."
+        </p>
+      </div>
+
+      <div class="sched-demo">
+        <div class="sched-left">
+          <div class="panel-title">Processes waiting to run</div>
+          <div class="proc-pool" id="proc-pool"></div>
+          <div class="controls vertical">
+            <label class="slider-row">
+              Time slice: <span id="slice-label">200ms</span>
+              <input type="range" id="slice-slider" min="40" max="600" step="20" value="200" />
+            </label>
+            <label class="slider-row">
+              Number of programs: <span id="count-label">4</span>
+              <input type="range" id="count-slider" min="1" max="6" step="1" value="4" />
+            </label>
+            <div class="controls">
+              <button class="btn btn-primary" id="sched-run">Run scheduler ▶</button>
+              <button class="btn btn-ghost" id="sched-reset">Reset ⟲</button>
+            </div>
+          </div>
+        </div>
+        <div class="sched-right">
+          <div class="panel-title">The single physical CPU</div>
+          <div class="cpu-chip" id="cpu-chip">idle</div>
+          <div class="panel-title" style="margin-top:18px">What it produces (one shared output stream)</div>
+          <div class="screen sched-screen" id="sched-output"></div>
+        </div>
+      </div>
+      <p class="caption">
+        Drag the sliders. A <strong>small</strong> time slice = output letters interleave finely (feels parallel, more switching overhead).
+        A <strong>big</strong> slice = each program hogs the CPU in long bursts. This choice — who runs and when — is called a
+        <strong>scheduling policy</strong>.
+      </p>
+    </section>
+
+    <!-- ====================== 4. CONCURRENCY ====================== -->
+    <section id="concurrency" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 4 · Big Idea #2</span>
+        <h2>Concurrency: when sharing goes wrong</h2>
+        <p class="explain">
+          When two helpers (<strong>threads</strong>) work inside the same program, they share the same memory.
+          That's powerful — and dangerous. Watch what happens when both try to add to the same counter.
+        </p>
+        <p class="explain">
+          Adding 1 looks like a single step, but the CPU really does <strong>three</strong>:
+          <code>load</code> the value → <code>add</code> one → <code>store</code> it back. If the two threads
+          interleave those tiny steps, they overwrite each other and <em>lose</em> counts. An
+          <strong>atomic</strong> operation (protected by a <strong>lock</strong>) forces one thread to finish
+          all three steps before the other starts.
+        </p>
+      </div>
+
+      <div class="race-demo">
+        <div class="race-controls">
+          <div class="goal">Each thread adds <strong>1</strong> to the counter <strong id="race-target">200</strong> times.
+            <br />Correct total should be <strong id="race-expected">400</strong>.</div>
+          <label class="toggle">
+            <input type="checkbox" id="lock-toggle" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span id="lock-label">Lock: OFF (race condition!)</span>
+          </label>
+          <div class="controls">
+            <button class="btn btn-primary" id="race-run">Run both threads ▶</button>
+            <button class="btn btn-ghost" id="race-reset">Reset ⟲</button>
+          </div>
+        </div>
+
+        <div class="race-stage">
+          <div class="thread-col" id="thread-a">
+            <div class="thread-title">Thread A</div>
+            <div class="thread-op" id="op-a">idle</div>
+          </div>
+          <div class="counter-box">
+            <div class="counter-label">shared counter</div>
+            <div class="counter-val" id="counter-val">0</div>
+            <div class="counter-status" id="counter-status"></div>
+          </div>
+          <div class="thread-col" id="thread-b">
+            <div class="thread-title">Thread B</div>
+            <div class="thread-op" id="op-b">idle</div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">Run it with the lock <strong>off</strong> a few times — you'll often land <em>below</em> 400 (lost updates). Flip the lock <strong>on</strong> and it's always exactly right. That's why operating systems give us locks.</p>
+    </section>
+
+    <!-- ====================== 5. PERSISTENCE ====================== -->
+    <section id="persistence" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 5 · Big Idea #3</span>
+        <h2>Persistence: remembering after the power dies</h2>
+        <p class="explain">
+          Memory (RAM) is <strong>volatile</strong> — yank the power and it forgets everything instantly.
+          The disk is <strong>persistent</strong> — it remembers even when off. To save something for real,
+          a program asks the OS's <strong>file system</strong> to write it to disk, using system calls like
+          <code>open</code>, <code>write</code>, and <code>close</code>.
+        </p>
+      </div>
+
+      <div class="persist-demo">
+        <div class="store-col">
+          <div class="store ram" id="ram-box">
+            <div class="store-head">RAM <span class="store-tag volatile">volatile</span></div>
+            <div class="store-body" id="ram-body"></div>
+          </div>
+          <div class="store disk" id="disk-box">
+            <div class="store-head">Disk <span class="store-tag durable">persistent</span></div>
+            <div class="store-body" id="disk-body"></div>
+          </div>
+        </div>
+        <div class="persist-controls">
+          <input type="text" id="data-input" class="text-input" placeholder="type a note…" maxlength="22" />
+          <button class="btn" id="add-ram">Create in RAM</button>
+          <button class="btn btn-primary" id="save-disk">write() → save to disk</button>
+          <button class="btn btn-danger" id="pull-plug">⚡ Pull the plug!</button>
+          <button class="btn btn-ghost" id="reboot">Reboot</button>
+          <p class="hint" id="persist-hint">Make a note, keep it only in RAM, then pull the plug. Then try again but save to disk first.</p>
+        </div>
+      </div>
+      <p class="caption">The lesson: anything that only lived in RAM is gone after a crash. Only what reached the disk survives. Real file systems add tricks like <strong>journaling</strong> so a crash <em>mid-write</em> doesn't corrupt your data.</p>
+    </section>
+
+    <!-- ====================== 6. PROTECTION ====================== -->
+    <section id="protection" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 6</span>
+        <h2>User mode vs Kernel mode (the trap)</h2>
+        <p class="explain">
+          Your programs run in <strong>user mode</strong> — limited powers, like a guest with no keys to the
+          server room. They can't touch hardware directly. When a program needs something privileged (read a file,
+          do I/O), it makes a <strong>system call</strong>, which <strong>traps</strong> into the OS and flips the
+          CPU into <strong>kernel mode</strong> — full powers. The OS does the dangerous part safely, then does a
+          <strong>return-from-trap</strong> back to user mode.
+        </p>
+      </div>
+
+      <div class="trap-demo">
+        <div class="mode-rail">
+          <div class="mode-zone user-zone">
+            <div class="zone-label">USER MODE <span class="perm">limited powers</span></div>
+            <div class="prog-dot" id="prog-dot">your program</div>
+          </div>
+          <div class="mode-zone kernel-zone">
+            <div class="zone-label">KERNEL MODE <span class="perm perm-full">full powers</span></div>
+          </div>
+        </div>
+        <div class="trap-side">
+          <div class="trap-log" id="trap-log"></div>
+          <button class="btn btn-primary" id="syscall-btn">Make a system call: write("hi") ▶</button>
+          <p class="hint">Watch the program cross into the kernel only for the privileged moment, then come right back.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 7. WHAT IS A PROCESS ====================== -->
+    <section id="process" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 7</span>
+        <h2>So… what is a <em>process</em>?</h2>
+        <p class="explain">
+          A <strong>program</strong> is a lifeless file sitting on disk. A <strong>process</strong> is that program
+          <em>brought to life</em> and running. To capture a running program, the OS tracks its
+          <strong>machine state</strong>: the memory it can touch (its <strong>address space</strong>) and the
+          contents of the CPU's <strong>registers</strong>.
+        </p>
+      </div>
+
+      <div class="process-demo">
+        <div class="addr-space">
+          <div class="panel-title">Address space (the process's private memory)</div>
+          <div class="mem-region" data-info="The program's actual instructions — the compiled code, loaded from the program file on disk." data-name="code (text)">
+            <span>Code</span><small>the instructions</small>
+          </div>
+          <div class="mem-region" data-info="Global and static data the program needs from the start." data-name="data">
+            <span>Data</span><small>globals</small>
+          </div>
+          <div class="mem-region heap" data-info="Dynamically allocated memory. When you call malloc(), you get memory from here. The heap grows DOWNWARD into free space as you ask for more." data-name="heap">
+            <span>Heap ↓</span><small>malloc() / free() grow this</small>
+          </div>
+          <div class="mem-gap"><small>↕ free space ↕</small></div>
+          <div class="mem-region stack" data-info="Holds function call frames: local variables, parameters, and return addresses. It grows UPWARD as functions call functions." data-name="stack">
+            <span>Stack ↑</span><small>function calls, locals</small>
+          </div>
+        </div>
+
+        <div class="reg-space">
+          <div class="panel-title">Registers (the CPU's live state for this process)</div>
+          <div class="reg-card" data-info="The Program Counter (a.k.a. instruction pointer) holds the address of the NEXT instruction to run. Lose this and the CPU forgets where it was.">
+            <span class="rc-name">PC / IP</span>
+            <span class="rc-desc">which instruction is next</span>
+          </div>
+          <div class="reg-card" data-info="The Stack Pointer tracks the top of the stack, so the process knows where to push the next function call's data.">
+            <span class="rc-name">SP</span>
+            <span class="rc-desc">top of the stack</span>
+          </div>
+          <div class="reg-card" data-info="The Frame Pointer marks the base of the current function's stack frame, making it easy to find local variables and parameters.">
+            <span class="rc-name">FP</span>
+            <span class="rc-desc">base of current frame</span>
+          </div>
+          <div class="callout">
+            <strong>Why this matters:</strong> to pause a process and run another, the OS <em>saves</em> all of
+            this, then <em>restores</em> it later. That save/restore is a <strong>context switch</strong>.
+            <a href="#proc-struct">See exactly where xv6 stores it ↓</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 8. FORK / EXEC ====================== -->
+    <section id="forkexec" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 8</span>
+        <h2>How a process is born: <code>fork()</code> &amp; <code>exec()</code></h2>
+        <p class="explain">
+          Where do new processes even come from? In UNIX (and xv6), you don't create one from thin air.
+          You <strong>clone yourself</strong> with <code>fork()</code>, then the clone <strong>becomes a different program</strong>
+          with <code>exec()</code>. This odd two-step dance is <em>exactly</em> how your shell runs every command you type.
+        </p>
+        <ul class="step-legend">
+          <li><span class="dot fetch"></span><strong>fork()</strong> — make a near-identical copy (child) of the current process</li>
+          <li><span class="dot decode"></span><strong>exec()</strong> — replace the child's program with a brand-new one (same pid)</li>
+          <li><span class="dot execute"></span><strong>wait()</strong> — parent pauses until the child finishes, then cleans it up</li>
+        </ul>
+      </div>
+
+      <div class="fe-demo">
+        <div class="fe-stage">
+          <div class="fe-proc" id="fe-parent">
+            <div class="fe-head"><span class="fe-name">parent</span><span class="fe-pid" id="fe-parent-pid">pid 4</span></div>
+            <div class="fe-state" id="fe-parent-state">RUNNING</div>
+            <div class="fe-prog" id="fe-parent-prog">program: <b>sh</b></div>
+            <div class="fe-ret" id="fe-parent-ret"></div>
+          </div>
+
+          <div class="fe-proc empty" id="fe-child">
+            <div class="fe-head"><span class="fe-name">child</span><span class="fe-pid" id="fe-child-pid">—</span></div>
+            <div class="fe-state" id="fe-child-state">(none yet)</div>
+            <div class="fe-prog" id="fe-child-prog"></div>
+            <div class="fe-ret" id="fe-child-ret"></div>
+          </div>
+        </div>
+
+        <div class="fe-side">
+          <div class="panel-title">What just happened</div>
+          <div class="fe-explain" id="fe-explain">A single shell process is running, waiting for you to type a command. Press <kbd>Next step</kbd> to type <code>ls</code> and watch how the shell runs it.</div>
+          <div class="panel-title" style="margin-top:14px">Terminal</div>
+          <div class="screen fe-term" id="fe-term">$ </div>
+          <div class="controls" style="margin-top:14px">
+            <button class="btn btn-primary" id="fe-next">Next step ▸</button>
+            <button class="btn btn-ghost" id="fe-reset">Reset ⟲</button>
+          </div>
+          <div class="fe-progress" id="fe-progress"></div>
+        </div>
+      </div>
+      <p class="caption">
+        The mind-bender: <code>fork()</code> returns <strong>twice</strong> — it returns the child's pid to the parent, and
+        <code>0</code> to the child. That's how each copy knows who it is (<code>if (fork()==0) { ...child... }</code>). And
+        <code>exec()</code> never returns on success — there's no old program left to return to.
+      </p>
+    </section>
+
+    <!-- ====================== 9. PROCESS STATES ====================== -->
+    <section id="states" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 9</span>
+        <h2>The life of a process: states &amp; transitions</h2>
+        <p class="explain">
+          A process is not always running. Mostly it's waiting its turn, or waiting for slow I/O. It moves between
+          a handful of <strong>states</strong>. Click the transition buttons and drive a process through its life.
+        </p>
+      </div>
+
+      <div class="states-demo">
+        <div class="state-map">
+          <div class="state-node" data-state="new">NEW<small>being created</small></div>
+          <div class="state-node" data-state="ready">READY<small>could run, waiting its turn</small></div>
+          <div class="state-node running" data-state="running">RUNNING<small>on the CPU right now</small></div>
+          <div class="state-node" data-state="blocked">BLOCKED<small>waiting on I/O</small></div>
+          <div class="state-node" data-state="zombie">ZOMBIE<small>done, awaiting cleanup</small></div>
+        </div>
+        <div class="state-controls">
+          <div class="panel-title">Current state: <span id="cur-state" class="cur-state">new</span></div>
+          <div class="transition-buttons" id="transition-buttons"></div>
+          <div class="panel-title" style="margin-top:14px">History</div>
+          <div class="state-log" id="state-log"></div>
+        </div>
+      </div>
+      <p class="caption">
+        Only valid moves light up. <strong>Schedule</strong>: ready → running. <strong>Deschedule</strong>: running → ready (your time slice ended).
+        <strong>I/O</strong> sends you to blocked; when it finishes you go back to ready (<em>not</em> straight to running — you still wait your turn).
+      </p>
+    </section>
+
+    <!-- ====================== 10. CONTEXT SWITCH ====================== -->
+    <section id="ctxswitch" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 10</span>
+        <h2>The magic trick up close: the <em>context switch</em></h2>
+        <p class="explain">
+          Back in Chapter 3 the OS "switched between programs insanely fast." Here's the actual mechanism.
+          A CPU has only <strong>one</strong> set of real registers. To pause process A and run process B, the OS must
+          <strong>save A's registers</strong> into A's memory, then <strong>load B's saved registers</strong> into the CPU.
+          That swap — registers out, registers in — <em>is</em> a context switch.
+        </p>
+      </div>
+
+      <div class="cs-demo">
+        <div class="cs-proc" id="cs-a">
+          <div class="cs-title">Process A <span class="cs-badge" id="cs-a-badge">RUNNING</span></div>
+          <div class="panel-title">saved context (in memory)</div>
+          <div class="cs-regs" id="cs-a-regs"></div>
+        </div>
+
+        <div class="cs-cpu">
+          <div class="cs-title">Physical CPU <span class="cs-badge live">live registers</span></div>
+          <div class="cs-regs cpu" id="cs-cpu-regs"></div>
+          <div class="cs-now">running: <strong id="cs-running">A</strong></div>
+        </div>
+
+        <div class="cs-proc" id="cs-b">
+          <div class="cs-title">Process B <span class="cs-badge dim" id="cs-b-badge">READY</span></div>
+          <div class="panel-title">saved context (in memory)</div>
+          <div class="cs-regs" id="cs-b-regs"></div>
+        </div>
+      </div>
+
+      <div class="cs-controls">
+        <div class="cs-log" id="cs-log"></div>
+        <div class="controls">
+          <button class="btn btn-primary" id="cs-switch">Context switch ⇄</button>
+          <button class="btn btn-ghost" id="cs-reset">Reset ⟲</button>
+        </div>
+      </div>
+      <p class="caption">
+        Watch the values: the CPU's live registers get copied <em>into</em> the running process's saved slot, then the
+        other process's saved values get copied <em>into</em> the CPU. In xv6 this happens in a function literally called
+        <code>swtch()</code>, and the saved values live in the <code>context</code> field of <code>struct proc</code> (next chapter!).
+      </p>
+    </section>
+
+    <!-- ====================== 11. PROC STRUCT ====================== -->
+    <section id="proc-struct" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 11 · The payoff</span>
+        <h2>The real xv6 <code>struct proc</code></h2>
+        <p class="explain">
+          Everything you just learned lives inside <em>one</em> C struct in the actual xv6 kernel. The OS keeps an
+          array of these — one per process — and that array <em>is</em> the process list. Click any field to see
+          which idea from this page it represents.
+        </p>
+      </div>
+
+      <div class="struct-demo">
+        <pre class="struct-code" id="struct-code"></pre>
+        <div class="struct-info" id="struct-info">
+          <div class="si-placeholder">👆 Click a highlighted field on the left to learn what it does.</div>
+        </div>
+      </div>
+      <p class="caption">This is the <em>real</em> xv6 <code>struct proc</code> (from <code>proc.h</code>), lightly trimmed. Real operating systems — Linux, macOS, Windows — track all of this too, just with <em>far</em> more fields. Want to see the rest of the actual code? Keep going. ↓</p>
+    </section>
+
+    <!-- ====================== 12. THE REAL DEAL ====================== -->
+    <section id="real-deal" class="section">
+      <div class="section-head">
+        <span class="kicker">Chapter 12 · The Real Deal</span>
+        <h2>Enough pretending. Here's the <em>actual</em> xv6 source code.</h2>
+        <p class="explain">
+          Funny thing about everything above: we wrote <strong>JavaScript</strong> to <em>simulate</em> an operating system,
+          running inside a browser, which is itself a program running on a real OS. Cute. But xv6 is the real article —
+          <strong>raw C and x86 assembly</strong> that boots on bare metal and actually <em>is</em> the machine's boss.
+        </p>
+        <p class="explain">
+          Below is the genuine source (straight from MIT's <code>xv6-public</code> kernel). Every tab is the real code behind
+          a toy you just played with. The punchline you've been waiting for: the context switch is <strong>hand-written
+          assembly</strong>, and the lock that saved your counter is <strong>one atomic instruction</strong>.
+        </p>
+      </div>
+
+      <div class="xv6-about">
+        <h3 class="xa-title">📖 Wait — what <em>is</em> xv6, exactly?</h3>
+        <div class="xa-grid">
+          <div class="xa-card">
+            <div class="xa-h">The origin story</div>
+            <p>
+              xv6 is a tiny, Unix-like <strong>teaching operating system</strong> written at <strong>MIT in 2006</strong>
+              for their OS course (then <strong>6.828</strong>). It's a modern re-implementation of Ken Thompson &amp;
+              Dennis Ritchie's <strong>Unix Version 6 (V6)</strong> from 1975 — same spirit and structure, but rewritten
+              in clean <strong>ANSI&nbsp;C</strong> instead of 1970s pre-K&amp;R C. The whole point: it's only ~9,000
+              lines, so a student can read the <em>entire</em> kernel in a weekend.
+            </p>
+          </div>
+          <div class="xa-card">
+            <div class="xa-h">Old vs. new: two architectures</div>
+            <p>
+              The original xv6 targets <strong>Intel x86</strong> — that's
+              <a href="https://github.com/mit-pdos/xv6-public" target="_blank" rel="noopener"><code>xv6-public</code></a>,
+              and it's the version you see in these tabs. Around 2019 MIT <strong>ported it to RISC-V</strong> for the
+              renamed course <strong>6.1810</strong>; that newer edition is
+              <a href="https://github.com/mit-pdos/xv6-riscv" target="_blank" rel="noopener"><code>xv6-riscv</code></a>.
+            </p>
+          </div>
+          <div class="xa-card">
+            <div class="xa-h">Why this demo uses the x86 version</div>
+            <p>
+              The <strong>ideas are identical</strong> across both — only the architecture-specific bits differ
+              (register names, the <code>swtch.S</code> assembly, and <code>pgdir</code> vs <code>pagetable</code>).
+              We use x86 here because it's the version the <strong>OSTEP</strong> textbook uses (e.g. its
+              <code>struct proc</code> figure), so the code matches what most readers are studying from.
+            </p>
+          </div>
+        </div>
+        <p class="xa-foot">
+          So: same OS, two flavors. <strong>x86</strong> (<code>xv6-public</code>, what's below, matches OSTEP) ·
+          <strong>RISC-V</strong> (<code>xv6-riscv</code>, the current MIT 6.1810 course).
+        </p>
+      </div>
+
+      <div class="rd">
+        <div class="rd-tabs" id="rd-tabs"></div>
+        <div class="rd-panel">
+          <div class="rd-meta" id="rd-meta"></div>
+          <pre class="src-code" id="rd-code">Pick a file above.</pre>
+        </div>
+      </div>
+      <p class="caption">
+        Want the whole thing? It's about <strong>9,000 lines</strong> of C — small enough to read end-to-end in a weekend, which is
+        exactly why it's the world's favorite teaching OS. Grab it at
+        <a href="https://github.com/mit-pdos/xv6-public" target="_blank" rel="noopener">github.com/mit-pdos/xv6-public</a>.
+      </p>
+
+      <div class="finale">
+        <h3>You made it. 🎉</h3>
+        <p>
+          You now know what an OS is (the waiter), the CPU's heartbeat (fetch–decode–execute), the three big ideas
+          (virtualization, concurrency, persistence), how the kernel protects the machine (the trap), what a
+          process really is (machine state), how it lives and dies (states), where xv6 keeps all of it
+          (<code>struct proc</code>) — and now what the <em>real</em> kernel code looks like. That's the foundation the
+          entire field is built on.
+        </p>
+        <a href="#hero" class="cta">Run it back ↑</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as an interactive companion to OSTEP &amp; the xv6 teaching kernel · open <code>index.html</code> in any browser
+    </footer>
+  </main>
+
+  <!-- ============ Authentic xv6 source (mit-pdos/xv6-public), read at runtime ============ -->
+  <script type="text/plain" id="src-proc">// proc.h — Saved registers for kernel context switches.
+struct context {
+  uint edi;
+  uint esi;
+  uint ebx;
+  uint ebp;
+  uint eip;
+};
+
+enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+
+// Per-process state
+struct proc {
+  uint sz;                     // Size of process memory (bytes)
+  pde_t* pgdir;                // Page table
+  char *kstack;                // Bottom of kernel stack for this process
+  enum procstate state;        // Process state
+  int pid;                     // Process ID
+  struct proc *parent;         // Parent process
+  struct trapframe *tf;        // Trap frame for current syscall
+  struct context *context;     // swtch() here to run process
+  void *chan;                  // If non-zero, sleeping on chan
+  int killed;                  // If non-zero, have been killed
+  struct file *ofile[NOFILE];  // Open files
+  struct inode *cwd;           // Current directory
+  char name[16];               // Process name (debugging)
+};</script>
+
+  <script type="text/plain" id="src-fork">// proc.c — Create a new process copying p as the parent.
+int
+fork(void)
+{
+  int i, pid;
+  struct proc *np;
+  struct proc *curproc = myproc();
+
+  // Allocate process.
+  if((np = allocproc()) == 0){
+    return -1;
+  }
+
+  // Copy process state from proc.
+  if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
+    kfree(np->kstack);
+    np->kstack = 0;
+    np->state = UNUSED;
+    return -1;
+  }
+  np->sz = curproc->sz;
+  np->parent = curproc;
+  *np->tf = *curproc->tf;
+
+  // Clear %eax so that fork returns 0 in the child.
+  np->tf->eax = 0;
+
+  for(i = 0; i < NOFILE; i++)
+    if(curproc->ofile[i])
+      np->ofile[i] = filedup(curproc->ofile[i]);
+  np->cwd = idup(curproc->cwd);
+
+  safestrcpy(np->name, curproc->name, sizeof(curproc->name));
+
+  pid = np->pid;
+
+  acquire(&ptable.lock);
+  np->state = RUNNABLE;
+  release(&ptable.lock);
+
+  return pid;
+}</script>
+
+  <script type="text/plain" id="src-exec">// exec.c — Replace the current process image with a new program.
+int
+exec(char *path, char **argv)
+{
+  char *s, *last;
+  int i, off;
+  uint argc, sz, sp, ustack[3+MAXARG+1];
+  struct elfhdr elf;
+  struct inode *ip;
+  struct proghdr ph;
+  pde_t *pgdir, *oldpgdir;
+  struct proc *curproc = myproc();
+
+  begin_op();
+
+  if((ip = namei(path)) == 0){
+    end_op();
+    cprintf("exec: fail\n");
+    return -1;
+  }
+  ilock(ip);
+  pgdir = 0;
+
+  // Check ELF header
+  if(readi(ip, (char*)&elf, 0, sizeof(elf)) != sizeof(elf))
+    goto bad;
+  if(elf.magic != ELF_MAGIC)
+    goto bad;
+
+  if((pgdir = setupkvm()) == 0)
+    goto bad;
+
+  // Load program into memory.
+  sz = 0;
+  for(i=0, off=elf.phoff; i<elf.phnum; i++, off+=sizeof(ph)){
+    if(readi(ip, (char*)&ph, off, sizeof(ph)) != sizeof(ph))
+      goto bad;
+    if(ph.type != ELF_PROG_LOAD)
+      continue;
+    if((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
+      goto bad;
+    if(loaduvm(pgdir, (char*)ph.vaddr, ip, ph.off, ph.filesz) < 0)
+      goto bad;
+  }
+  iunlockput(ip);
+  end_op();
+
+  // ... allocate user stack, push argv ...
+
+  // Commit to the user image.
+  oldpgdir = curproc->pgdir;
+  curproc->pgdir = pgdir;
+  curproc->sz = sz;
+  curproc->tf->eip = elf.entry;  // main
+  curproc->tf->esp = sp;
+  switchuvm(curproc);
+  freevm(oldpgdir);
+  return 0;
+
+ bad:
+  if(pgdir)
+    freevm(pgdir);
+  return -1;
+}</script>
+
+  <script type="text/plain" id="src-sched">// proc.c — Per-CPU process scheduler. Never returns. It loops, doing:
+//  - choose a process to run
+//  - swtch to start running that process
+//  - eventually that process transfers control back via swtch
+void
+scheduler(void)
+{
+  struct proc *p;
+  struct cpu *c = mycpu();
+  c->proc = 0;
+
+  for(;;){
+    // Enable interrupts on this processor.
+    sti();
+
+    // Loop over process table looking for process to run.
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE)
+        continue;
+
+      // Switch to chosen process. It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      c->proc = 0;
+    }
+    release(&ptable.lock);
+  }
+}</script>
+
+  <script type="text/plain" id="src-swtch"># swtch.S — Context switch
+#
+#   void swtch(struct context **old, struct context *new);
+#
+# Save the current registers on the stack, creating
+# a struct context, and save its address in *old.
+# Switch stacks to new and pop previously-saved registers.
+
+.globl swtch
+swtch:
+  movl 4(%esp), %eax
+  movl 8(%esp), %edx
+
+  # Save old callee-saved registers
+  pushl %ebp
+  pushl %ebx
+  pushl %esi
+  pushl %edi
+
+  # Switch stacks
+  movl %esp, (%eax)
+  movl %edx, %esp
+
+  # Load new callee-saved registers
+  popl %edi
+  popl %esi
+  popl %ebx
+  popl %ebp
+  ret</script>
+
+  <script type="text/plain" id="src-lock">// spinlock.c — Acquire the lock. Loops (spins) until acquired.
+void
+acquire(struct spinlock *lk)
+{
+  pushcli(); // disable interrupts to avoid deadlock.
+  if(holding(lk))
+    panic("acquire");
+
+  // The xchg is atomic.
+  while(xchg(&lk->locked, 1) != 0)
+    ;
+
+  // Tell the C compiler and the processor to not move loads or stores
+  // past this point, to ensure that the critical section's memory
+  // references happen after the lock is acquired.
+  __sync_synchronize();
+
+  lk->cpu = mycpu();
+  getcallerpcs(&lk, lk->pcs);
+}
+
+// Release the lock.
+void
+release(struct spinlock *lk)
+{
+  if(!holding(lk))
+    panic("release");
+
+  lk->pcs[0] = 0;
+  lk->cpu = 0;
+
+  __sync_synchronize();
+
+  // Release the lock, equivalent to lk->locked = 0.
+  asm volatile("movl $0, %0" : "+m" (lk->locked) : );
+
+  popcli();
+}</script>
+
+  <script type="text/plain" id="src-syscall">// syscall.c — Dispatch a system call by number stored in %eax.
+void
+syscall(void)
+{
+  int num;
+  struct proc *curproc = myproc();
+
+  num = curproc->tf->eax;
+  if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    curproc->tf->eax = syscalls[num]();
+  } else {
+    cprintf("%d %s: unknown sys call %d\n",
+            curproc->pid, curproc->name, num);
+    curproc->tf->eax = -1;
+  }
+}</script>
+
+  <script type="text/plain" id="src-sleep">// proc.c — Atomically release lock and sleep on chan. (BLOCKED state)
+void
+sleep(void *chan, struct spinlock *lk)
+{
+  struct proc *p = myproc();
+
+  if(p == 0)
+    panic("sleep");
+  if(lk == 0)
+    panic("sleep without lk");
+
+  // Must acquire ptable.lock in order to change p->state
+  // and then call sched. Once we hold ptable.lock, we can be
+  // guaranteed that we won't miss any wakeup, so it's okay to release lk.
+  if(lk != &ptable.lock){
+    acquire(&ptable.lock);
+    release(lk);
+  }
+  // Go to sleep.
+  p->chan = chan;
+  p->state = SLEEPING;
+
+  sched();
+
+  // Tidy up.
+  p->chan = 0;
+
+  // Reacquire original lock.
+  if(lk != &ptable.lock){
+    release(&ptable.lock);
+    acquire(lk);
+  }
+}
+
+// Wake up all processes sleeping on chan. (back to RUNNABLE / ready)
+static void
+wakeup1(void *chan)
+{
+  struct proc *p;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    if(p->state == SLEEPING && p->chan == chan)
+      p->state = RUNNABLE;
+}</script>
+
+  <script src="script.js"></script>
+</body>
+</html>
