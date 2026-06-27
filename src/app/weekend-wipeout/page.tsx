@@ -13,7 +13,7 @@ export default function WeekendWipeoutPage() {
     <WeekendWipeoutIntro>
       <div className="mx-auto max-w-3xl px-6 py-16">
         <p className="font-mono text-sm uppercase tracking-widest text-[var(--color-accent-dim)]">
-          Initiative
+          Troll Post :D
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-text)] sm:text-4xl">
           Weekend Wipeout
