@@ -65,6 +65,16 @@ export default function WeekendWipeoutPage() {
         </p>
 
         <p>
+          I want the most gatekept, elitist parts of tech hiring to become a
+          running joke. I want a world where a school teacher — because I love
+          teachers — is respected more than a principal engineer at Amazon,
+          Google, or Meta. These companies don&apos;t get to brainwash us into
+          thinking the people who work there are better than everyone else. They
+          don&apos;t get to run a toxic rat race of five million interview
+          rounds just to get rejected.
+        </p>
+
+        <p>
           You might be asking: well, if we did that, wouldn&apos;t these
           companies come up with new ways to hire? How would hiring even work?
           How do people find jobs and support families?
@@ -78,16 +88,6 @@ export default function WeekendWipeoutPage() {
             About Me
           </Link>
           .
-        </p>
-
-        <p>
-          I want the most gatekept, elitist parts of tech hiring to become a
-          running joke. I want a world where a school teacher — because I love
-          teachers — is respected more than a principal engineer at Amazon,
-          Google, or Meta. These companies don&apos;t get to brainwash us into
-          thinking the people who work there are better than everyone else. They
-          don&apos;t get to run a toxic rat race of five million interview
-          rounds just to get rejected.
         </p>
       </div>
 
