@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Immersive Learning · Startup Roadmap</title>
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --panel: #161619;
+    --panel2: #1c1c20;
+    --stroke: #2a2a30;
+    --text: #ededf0;
+    --text2: #a8a8b3;
+    --text3: #6f6f7a;
+    --accent: #5b8cff;
+    --green: #3fb950;
+    --amber: #d9a13b;
+    --red: #e5534b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+  h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h2 { font-size: 20px; margin: 40px 0 10px; letter-spacing: -0.01em; }
+  h3 { font-size: 15px; margin: 0 0 6px; }
+  p { color: var(--text2); margin: 0 0 12px; }
+  .lead { font-size: 16px; }
+  .muted { color: var(--text3); font-size: 13px; }
+  .accent { color: var(--accent); }
+  strong { color: var(--text); }
+  .divider { height: 1px; background: var(--stroke); margin: 32px 0; border: 0; }
+
+  .callout { border: 1px solid var(--stroke); border-radius: 10px; padding: 14px 16px; margin: 14px 0; background: var(--panel); }
+  .callout .title { font-weight: 600; margin-bottom: 4px; }
+  .callout.warn { border-left: 3px solid var(--amber); }
+  .callout.danger { border-left: 3px solid var(--red); }
+  .callout.info { border-left: 3px solid var(--accent); }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0 6px; }
+  .stat { border: 1px solid var(--stroke); border-radius: 10px; padding: 14px; background: var(--panel); }
+  .stat .v { font-size: 24px; font-weight: 600; }
+  .stat .l { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 18px; }
+  .tab { border: 1px solid var(--stroke); border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: var(--text2); background: transparent; user-select: none; }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .phase { display: none; }
+  .phase.active { display: block; }
+  .phase .win { font-size: 12px; color: var(--text2); border: 1px solid var(--stroke); border-radius: 999px; padding: 2px 10px; display: inline-block; margin-left: 8px; vertical-align: middle; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .card { border: 1px solid var(--stroke); border-radius: 10px; background: var(--panel); overflow: hidden; }
+  .card .hd { font-size: 12px; font-weight: 600; color: var(--text2); padding: 9px 14px; border-bottom: 1px solid var(--stroke); background: var(--panel2); text-transform: uppercase; letter-spacing: 0.04em; }
+  .card .bd { padding: 12px 14px; }
+  .card .bd .li { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+  .card .bd .li:last-child { margin-bottom: 0; }
+
+  table { width: 100%; border-collapse: collapse; border: 1px solid var(--stroke); border-radius: 10px; overflow: hidden; margin: 12px 0; font-size: 13px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--stroke); }
+  th { color: var(--text2); font-weight: 600; background: var(--panel2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+  tr:last-child td { border-bottom: 0; }
+  td .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+  .dot.green { background: var(--green); }
+  .dot.amber { background: var(--amber); }
+  .dot.gray { background: var(--text3); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .steps .card { margin-bottom: 8px; }
+
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .cols, .grid2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Immersive Learning · Startup Roadmap</h1>
+  <p class="lead">Thesis: lectures waste class time on content AI delivers instantly. VR's edge isn't information — it's <strong>experience</strong>: doing the impossible, dangerous, or invisible, with the "grade" inferred from what you do.</p>
+
+  <div class="callout warn">
+    <div class="title">Reframe "addictive" before you pitch it</div>
+    <p>"Addictive education for students" is a PR and regulatory landmine, especially with minors. Sell the same mechanic as <strong>engagement / flow / intrinsic motivation</strong> backed by learning science. Same product, fundable language.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v accent">1</div><div class="l">Domain wedge (not "all of education")</div></div>
+    <div class="stat"><div class="v" style="color:var(--amber)">13+</div><div class="l">Typical headset min age — matters for K-12</div></div>
+    <div class="stat"><div class="v">15–20m</div><div class="l">Realistic in-class VR session</div></div>
+    <div class="stat"><div class="v" style="color:var(--amber)">12–18mo</div><div class="l">Public-school sales cycle</div></div>
+  </div>
+  <p class="muted">Directional planning assumptions, not measured data — refine with your own pilots and target market.</p>
+
+  <hr class="divider" />
+
+  <h2>The three checkpoints</h2>
+  <p>Each phase has ONE job. You don't move on (or raise the next round) until you've earned it. Click a phase.</p>
+
+  <div class="tabs">
+    <button class="tab active" data-phase="start">Start · Prove the lift</button>
+    <button class="tab" data-phase="mid">Mid · Prove it scales</button>
+    <button class="tab" data-phase="end">End · Prove the business</button>
+  </div>
+
+  <div class="phase active" id="start">
+    <h3>Start · Prove the lift <span class="win">Month 0–6</span></h3>
+    <p>Prove that ONE VR experience teaches one hard concept measurably better than a lecture. Not a platform yet — one unforgettable demo.</p>
+    <div class="cols">
+      <div class="card"><div class="hd">What you build</div><div class="bd">
+        <div class="li">• Pick a single wedge concept (e.g. electric fields, or cellular respiration) and build one 15–20 min experience.</div>
+        <div class="li">• Bake in "stealth assessment": log what the learner does and infer mastery from actions, not a quiz.</div>
+        <div class="li">• Run a tiny A/B: VR group vs. video/lecture group, same pre/post test.</div>
+      </div></div>
+      <div class="card"><div class="hd">What you must prove</div><div class="bd">
+        <div class="li">• Pre/post test gain (VR cohort beats control by a clear margin).</div>
+        <div class="li">• Completion + voluntary replay rate (your real "engagement" signal).</div>
+        <div class="li">• 1–2 teachers who say "I want this in my room."</div>
+      </div></div>
+    </div>
+    <div class="callout info"><div class="title">Money &amp; spend this phase</div>
+      <p><strong>When to raise:</strong> Don't raise yet. Bootstrap, grants (NSF SBIR, dept. of ed innovation), or a friends/family pre-seed (&lt;$150k) if you need a headset lab.</p>
+      <p style="margin:0"><strong>Where it goes:</strong> Headsets, one strong Unity/Unreal dev, your time. Keep it cheap.</p>
+    </div>
+  </div>
+
+  <div class="phase" id="mid">
+    <h3>Mid · Prove it scales <span class="win">Month 6–18</span></h3>
+    <p>Turn one demo into a repeatable product across 5–15 classrooms, and prove you can build new content without a Hollywood budget each time.</p>
+    <div class="cols">
+      <div class="card"><div class="hd">What you build</div><div class="bd">
+        <div class="li">• A content engine: reusable templates + AI-generated scenery/scenarios so a new sim is weeks, not years.</div>
+        <div class="li">• Teacher dashboard: the "grade" is a mastery map from simulation telemetry.</div>
+        <div class="li">• 3–5 sims in ONE domain so a teacher can use you for a whole unit, not one day.</div>
+      </div></div>
+      <div class="card"><div class="hd">What you must prove</div><div class="bd">
+        <div class="li">• Multi-site pilot data: learning outcomes + retention across different schools.</div>
+        <div class="li">• Cost-to-build per sim dropping (this is your scalability story).</div>
+        <div class="li">• First paid pilots converting to renewals.</div>
+      </div></div>
+    </div>
+    <div class="callout info"><div class="title">Money &amp; spend this phase</div>
+      <p><strong>When to raise:</strong> Raise your SEED here ($1.5–4M) — AFTER pilot data. You're selling the curve: outcomes + falling content cost + early revenue.</p>
+      <p style="margin:0"><strong>Where it goes:</strong> Content pipeline, learning scientist, first sales hire, deeper telemetry.</p>
+    </div>
+  </div>
+
+  <div class="phase" id="end">
+    <h3>End · Prove the business <span class="win">Month 18–36</span></h3>
+    <p>Become the default immersive layer for a domain, with real contracts, real renewals, and unit economics an investor can model.</p>
+    <div class="cols">
+      <div class="card"><div class="hd">What you build</div><div class="bd">
+        <div class="li">• District / university-wide deployments with admin tooling, rostering, LMS integration.</div>
+        <div class="li">• Efficacy study (ideally peer-reviewed or 3rd-party) — your credibility moat.</div>
+        <div class="li">• Optional moat: biometric/attention research as a defensible edge — NOT before this.</div>
+      </div></div>
+      <div class="card"><div class="hd">What you must prove</div><div class="bd">
+        <div class="li">• Net revenue retention, CAC payback, contract sizes growing.</div>
+        <div class="li">• Independent proof of learning gains at scale.</div>
+        <div class="li">• Expansion path to a 2nd and 3rd domain.</div>
+      </div></div>
+    </div>
+    <div class="callout info"><div class="title">Money &amp; spend this phase</div>
+      <p><strong>When to raise:</strong> Raise SERIES A ($8–20M) to expand domains + go-to-market once unit economics are clean.</p>
+      <p style="margin:0"><strong>Where it goes:</strong> GTM engine, multi-domain content, research partnerships, integrations.</p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h2>Which domains actually win in VR</h2>
+  <p>Rank by learning lift from immersion vs. cost to author the content. Start where the lift is high and the build is sane.</p>
+  <table>
+    <thead><tr><th>Domain</th><th>VR learning lift</th><th>Build cost</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot green"></span>Physics (fields, forces, orbits)</td><td>Very high</td><td>Medium</td><td>Strong wedge — invisible made visible</td></tr>
+      <tr><td><span class="dot green"></span>Chemistry / molecular</td><td>Very high</td><td>Medium</td><td>Strong — 3D structures, safe reactions</td></tr>
+      <tr><td><span class="dot green"></span>Biology / anatomy / med</td><td>Very high</td><td>High</td><td>High willingness-to-pay (nursing/med)</td></tr>
+      <tr><td><span class="dot green"></span>Astronomy / earth science</td><td>High</td><td>Medium</td><td>Great demo, scale-of-space wins</td></tr>
+      <tr><td><span class="dot amber"></span>World history (reconstructions)</td><td>High</td><td>Very high</td><td>Magical but expensive to author</td></tr>
+      <tr><td><span class="dot green"></span>Engineering / trades / labs</td><td>High</td><td>Medium</td><td>Underrated — direct ROI, adult buyers</td></tr>
+      <tr><td><span class="dot amber"></span>Math (abstract)</td><td>Medium</td><td>Medium</td><td>Harder to make spatial; pick carefully</td></tr>
+      <tr><td><span class="dot gray"></span>Reading / writing / language</td><td>Low</td><td>Low</td><td>Avoid early — VR adds little</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">Rule of thumb: VR wins when the thing is spatial, invisible, dangerous, expensive, or impossible to visit. It loses on text-heavy, abstract-symbolic work.</p>
+
+  <h2>Which classrooms benefit most (and pay)</h2>
+  <p>Counterintuitive: public K-12 is the hardest first customer, not the easiest. Go where labs are expensive, stakes are high, and budgets exist.</p>
+  <table>
+    <thead><tr><th>Buyer</th><th>Why them</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot green"></span>Nursing / med / health programs</td><td>Expensive labs, safety-critical skills, adults, real budgets</td><td>Best beachhead</td></tr>
+      <tr><td><span class="dot green"></span>Trade / vocational schools</td><td>Hands-on, clear ROI, motivated to cut equipment cost</td><td>Strong</td></tr>
+      <tr><td><span class="dot green"></span>Universities (STEM labs)</td><td>Innovation budgets, faculty champions, research angle</td><td>Good</td></tr>
+      <tr><td><span class="dot green"></span>Corporate / workforce training</td><td>Pays the most, fastest cycle — funds the EDU mission</td><td>Cash engine</td></tr>
+      <tr><td><span class="dot amber"></span>Private / charter high schools</td><td>Faster decisions, can buy headsets</td><td>Moderate</td></tr>
+      <tr><td><span class="dot gray"></span>Public K-12 districts</td><td>No headsets, tiny budgets, 12–18mo procurement</td><td>Last, not first</td></tr>
+    </tbody>
+  </table>
+
+  <h2>When to ask for money</h2>
+  <p>Raise <strong>after</strong> each proof point, not before. Investors fund de-risked curves: outcomes, falling content cost, then unit economics.</p>
+  <table>
+    <thead><tr><th>Stage</th><th>When</th><th>Ask</th><th>What it unlocks</th></tr></thead>
+    <tbody>
+      <tr><td>Pre-seed / grants</td><td>Now → Month 6</td><td>$0–150k</td><td>Build ONE sim + run the A/B test</td></tr>
+      <tr><td>Seed</td><td>After pilot data (~Mo 9–15)</td><td>$1.5–4M</td><td>Content engine + 5–15 classroom pilots</td></tr>
+      <tr><td>Series A</td><td>After clean unit economics (~Mo 24–36)</td><td>$8–20M</td><td>Multi-domain expansion + GTM</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider" />
+
+  <h2>Blindspots to fix early</h2>
+  <div class="grid2">
+    <div class="callout danger"><div class="title">The "addiction" &amp; ethics trap</div><p style="margin:0">Engagement loops on minors invite scrutiny. Build outcome-based, age-aware, with an off-ramp — make ethics a selling point, not a liability.</p></div>
+    <div class="callout danger"><div class="title">Content cost is the silent killer</div><p style="margin:0">Every sim is basically a small video game. Without an AI-assisted content engine + reusable templates, your costs scale linearly and margins die. This IS your scalability story.</p></div>
+    <div class="callout warn"><div class="title">Hardware reality</div><p style="margin:0">Headset cost, age limits, motion sickness, hygiene between students, IT support, and students who can't use VR. Always ship a non-VR fallback.</p></div>
+    <div class="callout warn"><div class="title">Efficacy or it didn't happen</div><p style="margin:0">Schools and investors want evidence. Design the proof test into the pilot from day one; a 3rd-party/peer-reviewed study later is a real moat.</p></div>
+    <div class="callout warn"><div class="title">Don't lead with neuroscience</div><p style="margin:0">Brain/EEG research is slow, costly, and regulated. Start on established learning science (cognitive load, active recall, spaced practice, flow). Biometrics = later moat.</p></div>
+    <div class="callout"><div class="title">Teachers are allies, not the enemy</div><p style="margin:0">Position as augmenting teachers (freeing them from rote lecturing), not replacing them. Teacher buy-in decides adoption.</p></div>
+  </div>
+
+  <hr class="divider" />
+
+  <h2>The next steps — breakdown</h2>
+  <p>Concrete, sequenced. Pick where to start and go deep on that step.</p>
+  <div class="steps">
+    <div class="card"><div class="hd">Step 1 · Lock the wedge</div><div class="bd"><div class="li">Choose ONE domain + ONE concept where lecturing fails and VR shines. Score candidates.</div></div></div>
+    <div class="card"><div class="hd">Step 2 · Define the "grade"</div><div class="bd"><div class="li">Spec the stealth-assessment: which in-sim actions map to which competencies.</div></div></div>
+    <div class="card"><div class="hd">Step 3 · Spec the MVP</div><div class="bd"><div class="li">One 15–20 min experience: storyboard, interactions, telemetry events, success metric.</div></div></div>
+    <div class="card"><div class="hd">Step 4 · Design the proof test</div><div class="bd"><div class="li">Pre/post assessment + control group so the pilot produces investor-grade evidence.</div></div></div>
+    <div class="card"><div class="hd">Step 5 · Hardware + access plan</div><div class="bd"><div class="li">Pick headset (age limits matter), figure out who already has VR, and a no-headset fallback.</div></div></div>
+    <div class="card"><div class="hd">Step 6 · Build the fundraise narrative</div><div class="bd"><div class="li">Translate findings into a deck: problem, wedge, outcomes, scalability, ask.</div></div></div>
+  </div>
+
+  <div class="callout info"><div class="title">Recommended literal next move</div><p style="margin:0">Don't build a platform. Build <strong>one</strong> 15–20 minute physics or anatomy experience with telemetry-based grading, then A/B test it against a lecture. That single result decides everything — and is the cheapest fundable milestone.</p></div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.phase').forEach(function (p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.phase).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
