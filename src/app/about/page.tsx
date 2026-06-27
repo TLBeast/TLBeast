@@ -28,11 +28,10 @@ export default function AboutPage() {
           and just turning it into intutive beauty...
         </p>
         <p>
-          <strong className="text-[var(--color-text)]">TLBeast </strong> is my
-          attempt to change that. I&apos;m learning these topics deeply and
-          documenting the journey — daily scribbles, walkthroughs, streams, and
-          interactive labs that let you see systems work instead of just reading
-          about them.
+          <strong className="text-[var(--color-text)]">TLBeast</strong>
+          …? I&apos;d love for you to CACHEusually HIT me up if you get the pun,
+          but feel free to send me an angry CACHE MISSage if you think it&apos;s
+          a cringe dad joke gone horribly wrong.
         </p>
         <p>
           <Link
