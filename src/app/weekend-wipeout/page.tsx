@@ -1,0 +1,98 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { siteConfig } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Weekend Wipeout",
+  description:
+    "An initiative to wipe out toxic gatekeeping in tech — LeetCode culture, elitist hiring, and the rat race that keeps people out.",
+};
+
+export default function WeekendWipeoutPage() {
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-16">
+      <p className="font-mono text-sm uppercase tracking-widest text-[var(--color-accent-dim)]">
+        Initiative
+      </p>
+      <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-text)] sm:text-4xl">
+        Weekend Wipeout
+      </h1>
+
+      <div className="mt-10 space-y-6 text-lg leading-relaxed text-[var(--color-text-muted)]">
+        <p>
+          There are parts of tech culture I have a real problem with. Elite
+          big-tech corporate culture annoys me more than I can easily put into
+          words. The entry-level CS job market is tragically broken and toxic.
+        </p>
+
+        <p className="text-[var(--color-text)]">
+          LeetCode and system design interviews in 2026? Are we serious?
+        </p>
+
+        <p>
+          I&apos;m here to wipe this out for good. The line is that only
+          top-tier college grads and seasoned software architects belong — that
+          an entry-level developer who can use AI well has no right to enter the
+          field?
+        </p>
+
+        <p>
+          Are we really expected to grind through endless &ldquo;projects&rdquo;
+          and &ldquo;internship prestige&rdquo; just to land a 9–5 for some CEO
+          chasing another quarter of growth? Are we stuck performing on
+          LinkedIn and chasing startup hype — move to SF, optimize for
+          liquidation from day one?
+        </p>
+
+        <p>
+          Here&apos;s what I believe: it&apos;s a human right to wake up and do
+          what you love, what you&apos;re best at, what lets you offer authentic
+          value — without being trapped in society&apos;s approval echo chamber
+          that seeps into every corner of our lives.
+        </p>
+
+        <p>
+          So let&apos;s max out AI to its fullest potential. Everyone deserves
+          their own system design, DSA, and algorithms engine in their mental
+          back pocket.
+        </p>
+
+        <p>
+          I want the most gatekept, elitist parts of tech hiring to become a
+          running joke. I want a world where a school teacher — because I love
+          teachers — is respected more than a principal engineer at Amazon,
+          Google, or Meta. These companies don&apos;t get to brainwash us into
+          thinking the people who work there are better than everyone else. They
+          don&apos;t get to run a toxic rat race of five million interview
+          rounds just to get rejected.
+        </p>
+      </div>
+
+      <p className="mt-12 text-2xl font-semibold tracking-tight text-[var(--color-text)] sm:text-3xl">
+        It&apos;s over.
+      </p>
+
+      <p className="mt-6 text-lg leading-relaxed text-[var(--color-text-muted)]">
+        I&apos;m starting this initiative. Whoever wants to join me can join
+        me.
+      </p>
+
+      <div className="mt-12 flex flex-wrap gap-3">
+        <Link
+          href="/scribbles"
+          className="rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-bg)] transition-opacity hover:opacity-90"
+        >
+          Follow the journey
+        </Link>
+        <Link
+          href={siteConfig.linkedIn}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-text-subtle)] hover:bg-[var(--color-bg-elevated)]"
+        >
+          Me LinkedIn
+        </Link>
+      </div>
+    </div>
+  );
+}

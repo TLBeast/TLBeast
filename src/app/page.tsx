@@ -42,10 +42,10 @@ export default function HomePage() {
               Read Systems Scribbles
             </Link>
             <Link
-              href="/building"
+              href="/weekend-wipeout"
               className="rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-text-subtle)] hover:bg-[var(--color-bg-elevated)]"
             >
-              What I&apos;m Building
+              Weekend Wipeout
             </Link>
           </div>
         </div>
@@ -113,9 +113,9 @@ export default function HomePage() {
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             {
-              href: "/diagrams",
-              title: "Visual Diagrams",
-              desc: "Step-by-step visuals that show how systems work under the hood.",
+              href: "/walkthroughs",
+              title: "Walkthroughs",
+              desc: "Video guides for the interactive labs — follow along step by step.",
             },
             {
               href: "/labs",

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ScribbleMedia } from "@/components/ScribbleMedia";
 
 export const metadata: Metadata = {
   title: "Interactive Labs",
@@ -16,20 +15,6 @@ const labs = [
       "An interactive OS playground — fetch-decode-execute, virtualization, concurrency, persistence, processes, fork/exec, context switches, and the real xv6 source code. Nothing to install. Just poke it.",
     href: "/labs/xv6/",
     status: "live" as const,
-    walkthroughs: [
-      {
-        title: "Lab overview",
-        embed:
-          "https://drive.google.com/file/d/168_oKd4K1g-7osMmW2D4-NjzNYYLTDpY/view?usp=sharing",
-        note: "Walkthrough of the xv6 interactive playground — watch before or while you poke around.",
-      },
-      {
-        title: "Concurrency",
-        embed:
-          "https://drive.google.com/file/d/1yczl6l8vxzXTBychGIhfbuykM3G2YHtu/view?usp=sharing",
-        note: "Walking through the concurrency section — threads, races, and what the lab shows.",
-      },
-    ],
   },
 ];
 
@@ -80,28 +65,15 @@ export default function LabsPage() {
           />
         </div>
 
-        {featured.walkthroughs.length > 0 && (
-          <div className="space-y-8">
-            <h3 className="text-lg font-semibold tracking-tight text-[var(--color-text)]">
-              Walkthroughs
-            </h3>
-            {featured.walkthroughs.map((walkthrough) => (
-              <div key={walkthrough.embed} className="space-y-3">
-                <div>
-                  <h4 className="font-medium text-[var(--color-text)]">
-                    {walkthrough.title}
-                  </h4>
-                  {walkthrough.note && (
-                    <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                      {walkthrough.note}
-                    </p>
-                  )}
-                </div>
-                <ScribbleMedia videoEmbed={walkthrough.embed} videoLabel="" />
-              </div>
-            ))}
-          </div>
-        )}
+        <p className="text-sm text-[var(--color-text-muted)]">
+          Prefer video?{" "}
+          <Link
+            href="/walkthroughs"
+            className="text-[var(--color-accent)] transition-colors hover:text-[var(--color-text)]"
+          >
+            Watch the walkthroughs →
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -123,3 +123,14 @@ export function getStreams(): Scribble[] {
     (scribble) => scribble.video || scribble.videoEmbed
   );
 }
+
+export function getWalkthroughs(): Scribble[] {
+  return getStreams()
+    .filter((scribble) => scribble.tags.includes("interactive-lab"))
+    .sort((a, b) => {
+      const dateDiff =
+        parseLocalDate(a.date).getTime() - parseLocalDate(b.date).getTime();
+      if (dateDiff !== 0) return dateDiff;
+      return a.slug.localeCompare(b.slug);
+    });
+}

@@ -30,7 +30,7 @@ export default function AboutPage() {
         <p>
           <strong className="text-[var(--color-text)]">TLBeast </strong> is my
           attempt to change that. I&apos;m learning these topics deeply and
-          documenting the journey — daily scribbles, visual diagrams, and eventually
+          documenting the journey — daily scribbles, walkthroughs, streams, and
           interactive labs that let you see systems work instead of just reading
           about them.
         </p>
@@ -53,6 +53,12 @@ export default function AboutPage() {
         </h2>
         <ul className="mt-4 space-y-3 text-sm text-[var(--color-text-muted)]">
           <li>
+            <Link href="/weekend-wipeout" className="text-[var(--color-accent)] hover:underline">
+              Weekend Wipeout
+            </Link>{" "}
+            — the initiative
+          </li>
+          <li>
             <Link href="/scribbles" className="text-[var(--color-accent)] hover:underline">
               Systems Scribbles
             </Link>{" "}
@@ -65,10 +71,10 @@ export default function AboutPage() {
             — recordings and stream sessions
           </li>
           <li>
-            <Link href="/diagrams" className="text-[var(--color-accent)] hover:underline">
-              Visual Diagrams
+            <Link href="/walkthroughs" className="text-[var(--color-accent)] hover:underline">
+              Walkthroughs
             </Link>{" "}
-            — step-by-step visuals for complex ideas
+            — video guides for the interactive labs
           </li>
           <li>
             <Link href="/labs" className="text-[var(--color-accent)] hover:underline">

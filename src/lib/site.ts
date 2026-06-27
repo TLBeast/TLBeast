@@ -12,10 +12,10 @@ export const siteConfig = {
 
 export const navItems = [
   { href: "/", label: "Home" },
-  { href: "/building", label: "What I'm Building" },
+  { href: "/weekend-wipeout", label: "Weekend Wipeout" },
   { href: "/scribbles", label: "Systems Scribbles" },
   { href: "/streams", label: "Streams" },
-  { href: "/diagrams", label: "Visual Diagrams" },
+  { href: "/walkthroughs", label: "Walkthroughs" },
   { href: "/labs", label: "Interactive Labs" },
   { href: "/about", label: "About" },
 ] as const;
