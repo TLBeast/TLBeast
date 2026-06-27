@@ -36,11 +36,9 @@ export default function WeekendWipeoutPage() {
         </p>
 
         <p>
-          Are we really expected to grind through endless &ldquo;projects&rdquo;
-          and &ldquo;internship prestige&rdquo; just to land a 9–5 for some CEO
-          chasing another quarter of growth? Are we stuck performing on
-          LinkedIn and chasing startup hype — move to SF, optimize for
-          liquidation from day one?
+          Are we stuck grinding out thousands of job apps, investing our soul
+          into interview prep, &ldquo;performing&rdquo; on LinkedIn and chasing
+          startup hype — move to SF, optimize for liquidation from day one?
         </p>
 
         <p>
