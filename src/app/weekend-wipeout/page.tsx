@@ -16,10 +16,24 @@ export default function WeekendWipeoutPage() {
           Troll Post :D
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-text)] sm:text-4xl">
-          Weekend Wipeout
+          Linkedln CopyPasta Post of the Century?
         </h1>
 
         <div className="mt-10 space-y-6 text-lg leading-relaxed text-[var(--color-text-muted)]">
+          <p>
+            Do you identify as a D1 LARPer? Do you struggle from frequent visions
+            of becoming the next big thing but have no desire to actually do
+            anything? Do you find yourself doomscrolling social media? Do you get
+            zero motion in your life (especially on Linkedln) while constantly
+            stalking every soul that gets into YC? Well I&apos;ve got the perfect
+            solution for you!
+          </p>
+
+          <p>
+            Just CTRL + C what you see below, CTRL + V, make the post, and
+            together, let&apos;s make Linkedln great again 🥴?!
+          </p>
+
           <p>
             There are parts of tech culture I have a real problem with. Elite
             big-tech corporate culture annoys me more than I can easily put into
