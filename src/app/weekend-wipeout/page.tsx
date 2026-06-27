@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Weekend Wipeout",
@@ -51,8 +52,32 @@ export default function WeekendWipeoutPage() {
 
         <p>
           So let&apos;s max out AI to its fullest potential. Everyone deserves
-          their own system design, DSA, and whatever other nonsense you want to
-          mentally add to this list.
+          their own system design, DSA, OAs, take-home projects, and whatever
+          other nonsense you want to mentally add to this list — all in their
+          mental back pocket.
+        </p>
+
+        <p>
+          We need to bring about a revolutionary level of clarity and break this
+          content down to a degree where a sleeping toddler could understand it.
+          The next time someone even utters the words &ldquo;interview prep,&rdquo;
+          it should be as simple as pointing in a direction.
+        </p>
+
+        <p>
+          You might be asking: well, if we did that, wouldn&apos;t these
+          companies come up with new ways to hire? How would hiring even work?
+          How do people find jobs and support families?
+        </p>
+
+        <p>
+          <span className="text-[var(--color-text)]">My answer:</span> it all
+          comes back down to the glory of demystifying the stuff I talked about
+          in my{" "}
+          <Link href="/about/" className="text-[var(--color-accent)] hover:underline">
+            About Me
+          </Link>
+          .
         </p>
 
         <p>
