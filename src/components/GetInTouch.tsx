@@ -70,6 +70,10 @@ export function GetInTouch() {
               Questions, feedback, or just want to talk systems? Send a message
               and it&apos;ll land in my inbox.
             </p>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-text-subtle)]">
+              If I send you a message back, it might end up in your spam folder
+              — just please check that.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -142,7 +146,7 @@ export function GetInTouch() {
             {status === "success" && (
               <p role="status" className="text-sm text-[var(--color-accent)]">
                 Thanks — your message has been sent. I&apos;ll get back to you
-                soon.
+                soon. If you hear from me, check your spam folder just in case.
               </p>
             )}
 

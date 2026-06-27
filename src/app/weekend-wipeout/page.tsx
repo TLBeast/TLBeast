@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Weekend Wipeout",
@@ -53,8 +51,8 @@ export default function WeekendWipeoutPage() {
 
         <p>
           So let&apos;s max out AI to its fullest potential. Everyone deserves
-          their own system design, DSA, and algorithms engine in their mental
-          back pocket.
+          their own system design, DSA, and whatever other nonsense you want to
+          mentally add to this list.
         </p>
 
         <p>
@@ -76,23 +74,6 @@ export default function WeekendWipeoutPage() {
         I&apos;m starting this initiative. Whoever wants to join me can join
         me.
       </p>
-
-      <div className="mt-12 flex flex-wrap gap-3">
-        <Link
-          href="/scribbles"
-          className="rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-bg)] transition-opacity hover:opacity-90"
-        >
-          Follow the journey
-        </Link>
-        <Link
-          href={siteConfig.linkedIn}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-text-subtle)] hover:bg-[var(--color-bg-elevated)]"
-        >
-          Me LinkedIn
-        </Link>
-      </div>
     </div>
   );
 }
