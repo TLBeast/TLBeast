@@ -29,7 +29,7 @@ export default function AboutPage() {
         </p>
         <p>
           <strong className="text-[var(--color-text)]">TLBeast</strong>
-          …? I&apos;d love for you to CACHEusually HIT me up if you get the pun,
+          …? I&apos;d love for you to CACHEually HIT me up if you get the pun,
           but feel free to send me an angry CACHE MISSage if you think it&apos;s
           a cringe dad joke gone horribly wrong.
         </p>
