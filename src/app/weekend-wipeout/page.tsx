@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
+import { Redirect } from "@/components/Redirect";
 
-export const metadata: Metadata = {
-  title: "Weekend Wipeout",
-  description: "Weekend Wipeout.",
-};
-
-export default function WeekendWipeoutPage() {
-  return <div className="mx-auto max-w-3xl px-6 py-16" />;
+export default function WeekendWipeoutRedirectPage() {
+  return <Redirect to="/" label="Home" />;
 }

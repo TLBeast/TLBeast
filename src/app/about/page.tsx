@@ -52,12 +52,6 @@ export default function AboutPage() {
         </h2>
         <ul className="mt-4 space-y-3 text-sm text-[var(--color-text-muted)]">
           <li>
-            <Link href="/weekend-wipeout" className="text-[var(--color-accent)] hover:underline">
-              Weekend Wipeout
-            </Link>{" "}
-            — the initiative
-          </li>
-          <li>
             <Link href="/scribbles" className="text-[var(--color-accent)] hover:underline">
               Systems Scribbles
             </Link>{" "}

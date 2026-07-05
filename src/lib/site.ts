@@ -12,7 +12,6 @@ export const siteConfig = {
 
 export const navItems = [
   { href: "/", label: "Home" },
-  { href: "/weekend-wipeout", label: "Weekend Wipeout" },
   { href: "/scribbles", label: "Systems Scribbles" },
   { href: "/streams", label: "Streams" },
   { href: "/walkthroughs", label: "Walkthroughs" },

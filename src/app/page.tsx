@@ -42,10 +42,10 @@ export default function HomePage() {
               Read Systems Scribbles
             </Link>
             <Link
-              href="/weekend-wipeout"
+              href="/labs"
               className="rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-text-subtle)] hover:bg-[var(--color-bg-elevated)]"
             >
-              Weekend Wipeout
+              Interactive Labs
             </Link>
           </div>
         </div>
